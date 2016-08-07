@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Index</title>
+</head>
+<body>
+<p>Choose a user to view the page from his point of view.</p>
+<?php
+include('../php/connect.php');
+include('../html/style.css');
+$sel_all_q=mysqli_query($con,"SELECT * FROM `bas_user`");
+?>
+<table>
+	<thead>
+		<tr class="heading">
+			<th>User name</th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php while($sel_all_arr=mysqli_fetch_array($sel_all_q)){?>
+		<tr>
+			<td><form method="post" action="../html/dashboard.html"><input type="hidden" name="user_id" value="<?php echo $sel_all_arr['user_id'];?>"><button type="submit" value="submit"><?php echo $sel_all_arr['user_name'];?></button></form></td>
+		</tr>
+	<?php } ?>	
+	</tbody>
+</table>
+<p><form method="post" action="../html/dashboard.html"><input type="hidden" name="user_id" value="-1">Or click <button type="submit" value="submit">here</button> to view as admin. If no users are added, view as admin.</form></p>
+</body>
+</html>

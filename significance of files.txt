@@ -1,0 +1,62 @@
+~/.htaccess:
+ This is just a basic .htaccess file, in which I've configured php scripts to be able to run inside html.
+
+~/index.html:
+ Just the default page that redirects requests to the html folder.
+
+~/html/index.html: 
+Contains the first page that you see. It is basically a page where you can select the user from who's perspective, the system can be viewed from. Or, you can login as the admin. This is a substitute method for creating a login page, as discussed in our email conversation.
+
+~/html/add_user.html:
+This is the page which allows you to enter a username to add to the user database. Duplicate values not entered.
+
+~/html/dashboard.html:
+Basic screen providing options to list users, remove or edit or add users, to admin, and only the list users option to other users.
+
+~/html/edit_user.html:
+To edit the username of the user
+
+~/html/list_users.html:
+Provides list of users that can be seen. Sorted by user_id.
+
+~/html/remove_user.html:
+To provide an interface to remove a particular user from the database.
+
+~/html/style.css:
+The css file providing styling properties to all elements of the page.
+
+~/scripts/:
+Contains jquery scripts.
+
+~/php/add_user.php:
+The php backend file that adds user to database
+
+~/php/close_connection.php:
+To close connection to the database.
+
+~/php/connect.php:
+To connect to the database.
+
+~/php/delete_mem.php:
+To perform backend operations to delete a member from a team.
+
+~/php/edit_enter.php:
+To perform backend operations to enter the edited username into database.
+
+~/php/edit_user.php:
+Provides an option to enter a new username for the selected user.
+
+~/php/post_user_popup.php:
+Provides a popup window that lets you set reporting rights for the selected user.
+
+~/php/remove_user.php:
+To perform backend operations to remove a user from the database.
+
+~/php/set_map_usr.php:
+To perform backend operations to set reporting rights for the user.
+
+~/php/view_man.php:
+To view all the managers in all levels of the selected user.
+
+~/php/view_team.php:
+To view all team members in all levels of the selected user.

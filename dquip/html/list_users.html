@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>List Users</title>
+	<script type="text/javascript" src="../scripts/jquery.js"></script>
+	<meta charset="utf-8">
+</head>
+<body>
+<?php 
+include('../html/style.css');
+session_start();
+if(!isset($_SESSION['user_id']))
+{
+die('Bad Page.');
+}
+$session_user_id=$_SESSION['user_id'];
+include('../php/connect.php');
+function find_team($var,$show_del=0)
+	{
+		include('../php/connect.php');
+		$flag=1;
+		while($flag==1)
+		{
+			$team_query=mysqli_query($con,"SELECT * FROM `mapping_table` where manager = '$var'");
+			if(mysqli_num_rows($team_query)!=0)
+			{
+				while($team_arr=mysqli_fetch_array($team_query))
+				{
+					$user_id_loop = $team_arr['team_member'];
+					$find_username_query=mysqli_query($con,"SELECT * FROM `bas_user` where user_id = '$user_id_loop' order by user_id ASC");
+					$find_username_array=mysqli_fetch_array($find_username_query);
+					?><tr><td><?php
+					echo $find_username_array['user_name'];?></td>
+					<td>
+						<form action="../php/delete_mem.php" method="post">
+							<input type="hidden" name="curr_usr" value="<?php echo $var;?>">
+							<input type="hidden" name="todel_mem" value="<?php echo $find_username_array['user_id'];?>">
+							<input type="hidden" name="flag_val" value="0">
+							<button type="submit" value="submit">Delete from team</button>
+						</form>
+						<form id="submitform" method="post" action="../php/post_user_popup.php" target="_blank">
+						<input type="hidden" name="user_id" value="<?php echo $find_username_array['user_id'];?>">
+						<button type="submit" value="Submit">Set Reporting Rights</button>
+					</form>
+					<form id="view_team_form" method="post" action="../php/view_team.php">
+						<input type="hidden" name="view_team" value="<?php echo $find_username_array['user_id'];?>">
+						<input type="hidden" name="show_delete" value="1">
+						<button type="submit" value="Submit">View Team Members</button>
+					</form>
+					<form id="view_man" method="post" action="../php/view_man.php">
+						<input type="hidden" name="view_man" value="<?php echo $find_username_array['user_id'];?>">
+						<input type="hidden" name="show_delete" value="1">
+						<button type="submit" value="Submit">View Managers</button>
+					</form>
+					
+				</td>
+					</tr>
+					<?php
+					find_team($user_id_loop);
+					$flag=0;
+				}
+			}
+			else $flag=0;
+			
+		}
+	}
+	
+	?>
+	<table id="user_list_table">
+		<thead>
+			<tr class="heading">
+				<th>User Name:</th>
+				<th>Actions:</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php
+		if($session_user_id==-1) {
+		$team_query=mysqli_query($con,"SELECT * FROM `bas_user` ORDER BY user_id ASC");
+		while($find_username_array=mysqli_fetch_array($team_query))
+		{ 
+		?>
+		<tr>
+		<td>
+		<?php echo $find_username_array['user_name'];?></td>
+		
+		<td>
+					<form id="submitform" method="post" action="../php/post_user_popup.php" target="_blank">
+						<input type="hidden" name="user_id" value="<?php echo $find_username_array['user_id'];?>">
+						<button type="submit" value="Submit">Set Reporting Rights</button>
+					</form>
+					<form id="view_team_form" method="post" action="../php/view_team.php">
+						<input type="hidden" name="view_team" value="<?php echo $find_username_array['user_id'];?>">
+						<input type="hidden" name="show_delete" value="1">
+						<button type="submit" value="Submit">View Team Members</button>
+					</form>
+					<form id="view_man" method="post" action="../php/view_man.php">
+						<input type="hidden" name="view_man" value="<?php echo $find_username_array['user_id'];?>">
+						<input type="hidden" name="show_delete" value="1">
+						<button type="submit" value="Submit">View Managers</button>
+					</form>
+					
+				</td> 
+		</tr>
+		<?php } } 
+		else {
+		$session_query=mysqli_query($con,"SELECT user_name from bas_user WHERE user_id='$session_user_id'");
+		$session_arr=mysqli_fetch_array($session_query);
+			echo '<tr><td>'.$session_arr['user_name'].'</td>';
+					?>
+					<td>No actions available!</td>
+					
+				
+					</tr>
+					<?php
+		
+			find_team($session_user_id); } 
+		?>
+		</tbody>	
+	</table>
+	<button id="back_button">Go Back</button>
+<script type="text/javascript">
+	$("#back_button").click(function(){
+		window.location.replace('../html/dashboard.html');
+	});
+</script>
+	</body>
+</html>

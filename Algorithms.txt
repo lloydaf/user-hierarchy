@@ -1,0 +1,129 @@
+Here are the algorithms that I've implemented.
+
+1)Add/Edit/Delete new user reporting to current user:
+
+Add user:
+
+	1. Define function 	findloop(current,reference,user_1,user_2,flag)
+	{
+	1.1 Get all results from mapping_table where manager=user_1
+	1.2 while(looparr=mysql fetch array(loopquery))
+			{	
+				var next=looparr['team_member']
+				if(ref=next) // means a loop is found
+				{	
+					
+					display alert "Loop found, value not entered."
+					
+					if(flag=1) //Reverse flag to remove other pair
+					{
+						DELETE FROM mapping_table where team_member=user_1 and manager=user_2
+					}
+					else // to be used in question 2)
+					{
+						DELETE FROM mapping_table where team_member=user_2 and manager=user_1
+					}
+					break from loop
+				}
+				findloop(next,reference,user_1,user_2,flag) //recursively call findloop
+			}
+	}
+	2. To Enter team member:
+	{
+	2.1 Select from bas_user where username=team_member_name
+	2.2 If an exact match is found:
+		{	
+			if no duplicate entry is found..
+			var team_user_id=userid(team_member_name)
+			enter into mapping_table values(team_user_id,current_user_id) 
+			for(all_possible_user_ids)
+			{
+				findloop(all_possible_user_ids, all_possible_user_ids,current_user_id,team_user_id,0) /* This is to check if any loop is formed because of this entry /*
+
+			}
+		}
+	}
+
+
+Edit user: 
+Note: Edit option is kept in dashboard, only admins can access.
+
+		get(userid)
+		print("Enter new username")
+		get(new_username)
+		select user_name from bas_user where user_id= userid.
+		user_name = new_username
+
+
+Delete user:
+
+1. get(current_user_id,todelete_user_id,flag_value)	
+2. Define function connect_children(todelete_user_id)
+	{
+		
+		
+			select all from mapping_table where manager=todelete_user_id
+			/* this is to check if children users, or team members, exist for todelete_user. */
+			if they exist{
+			for every child user: child_user_id
+				{
+					insert into mapping table values (child_user_id,current_user_id)
+					/* this is basically transferring team members to manager of current user */
+				}
+			}
+
+		
+	}
+3. if(flag_value=0) //which it will, for deleting team members
+	{
+		connect_children(todelete_user_id)
+		DELETE FROM mapping_table WHERE manager=current_user_id AND team_member=todelete_user_id
+		//basically to remove the user map from the mapping_table.
+	}
+	else /* for deleting manager, to be used in question 2 */
+	{
+		DELETE FROM mapping_table WHERE team_member=current_user_id AND manager=todelete_user_id
+	}
+
+
+
+
+2)Add/Edit/Delete new user to whom current user reports:
+Same as 1) above, just that flag=1 instead of 0, also, flag_value should be 1 to delete, instead of 0, and replace team_member with manager. Child nodes need not be transferred if manager is deleted. (Also, as of now, managers of deleted manager do not get linked to the child user. Rest of the procedure is the same.
+
+
+3) To fetch all users reporting to current user(all levels)
+
+	1. Define function find_team(var)
+	{
+
+		
+		flag=1;
+		while(flag=1)
+		{
+			SELECT all FROM mapping_table where manager = var
+			{
+				while(for every row in result)
+				{
+					user_id_loop = team_arr['team_member'];
+					username=get(user_name(user_id_loop))
+					print username
+					find_team(user_id_loop);
+					flag=0;
+				}
+			}
+			else flag=0;
+			
+		}
+		
+	}
+
+	2. user=get(user_id) //whos team is to be displayed.
+	3. find_team(user);
+
+
+
+
+4) To fetch all users who the current user reports to(all levels)
+	
+	Same as 3), just that you need to select values where team_member=var instead of manager=var

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add User Page</title>
+	<script type="text/javascript" src="../scripts/jquery.js"></script>
+</head>
+<body>
+<?php 
+session_start();
+include('../html/style.css');
+if(!isset($_SESSION['user_id']))
+{
+	die('Bad Page');
+}
+?>
+	<form action="../php/add_user.php" method="post" id="add_user_form">
+		<input type="text" name="user_name" pattern="[A-Za-z0-9_]+" placeholder="Enter username" title="You can enter A-Z, a-z, 0-9 and _" required="required">	
+		<button id="submit_btn" type="submit" value="Submit">Submit</button>
+	</form>
+	
+</body>
+</html>

@@ -1,0 +1,26 @@
+The basic aim behind carrying out this user hierarchy system implementation project, was to use minimum number of tables and minimum calculations or query operations.
+
+To achieve this, apart from the bas_user table, we just have one table, called a mapping_table, that has only two fields: Manager, and Team Member. When a team member is added to the current user, manager field is entered the user id of the current user, and the team member field is entered the user id of the team member who is added. Similarly, au contraire, while adding a manager, the manager field is entered the user id of the new manager, and the user id of the current user is entered into the team member column.
+
+We have functions such as findloop() to see if the entered pair of values causes a closed path in the organization structure, and causes a loop. In which case, the pair is removed.
+
+To query for team members, we just have a recursive function that keeps calling itself until all team members are found. This algorithm uses depth-first-traversal.
+
+Similarly, to query for managers, we just have a recursive function that calls itself until all managers are found.
+
+We have a jquery autocomplete script that suggests usernames that are after the current user id for adding team members, and suggests usernames that are before the current user id for adding managers. This was a query I had regarding this, and I have not received a mail regarding this from your end as of this moment. I know weekends are holidays, but I could not afford to wait till monday morning to get your response, as I will be back at work and might not get time to complete it. Hence, I am taking the liberty of interpreting this the way I felt was right. Apologies in advance if I should've waited.
+
+There is a popup window that opens up to set reporting rights.
+
+And some security measures were included, like adding patters and the "required" field to html form inputs, so that unhandled exceptions can be avoided.
+
+
+
+
+I realise that the UI is not top notch, but within the limited time given, I hope that I have been able to match expectations.
+
+I also know that some code is repeated, and though I am a strong advocate of DRY, I didn't get enough time to optimise my code to the fullest. But, I do believe that this will demonstrate what I wish to be seen with regard to my php skills.
+
+I think it is not out of place to mention that as I am working during the day, it is hard for me to find dedicated time for working. Also, as I do not have an alternate system to work with during these days, I had to work on this by finding time in between my work schedule. Right now, I am working on my friend's system, which I borrowed for the night.
+
+I hope you will find this to your liking.

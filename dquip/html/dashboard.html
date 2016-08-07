@@ -1,0 +1,53 @@
+<?php 
+if((!isset($_POST['user_id'])||empty($_POST['user_id'])))
+{
+	header('Location: index.html');
+}
+else
+{
+include('../html/style.css');
+session_start();
+$_SESSION['user_id']=$_POST['user_id'];
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="../scripts/jquery.js"></script>
+	<title>Index Page</title>
+</head>
+<body>
+<p>Welcome!</p>
+<button id="list_users_btn">List Users</button>
+<?php if($_SESSION['user_id']==-1){ ?>
+<button id="add_user_btn">Add User</button>
+<button id="remove_user_btn">Remove User</button>
+<button id="edit_user_btn">Edit User</button>
+<?php } ?>
+<button id="back_button">Go Back</button>
+<script type="text/javascript">
+	$("#back_button").click(function(){
+		window.location.replace('../');
+	});
+</script>
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#list_users_btn").click(function(){
+		window.location.replace("../html/list_users.html");
+	});
+
+	$("#add_user_btn").click(function(){
+		window.location.replace("../html/add_user.html");
+	});
+
+	$("#remove_user_btn").click(function(){
+		window.location.replace("../html/remove_user.html");
+	});
+
+	$("#edit_user_btn").click(function(){
+		window.location.replace("../html/edit_user.html");
+	});
+});	
+</script>
+</html>
+<?php } ?>
